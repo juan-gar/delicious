@@ -5,7 +5,6 @@ exports.homePage = (req,res) => {
 	console.log(req.name);
 	res.render('index');
 };
-
 exports.addStore = (req,res) => {
 	res.render('editStore', {title: 'Add Store'});
 };
@@ -31,3 +30,27 @@ exports.editStore = async (req, res) => {
 	//3. Render out the edit form so the user can update their store
 	res.render('editStore', { title: `Edit ${store.name}`, store })
 }
+
+
+exports.updateStore = async (req, res) => {
+	//find and update the store
+	const store = Store.findOneAndUpdate({_id: req.params.id}, req.body, {
+		new: true,
+		runValidators: true
+	}).exec();
+	req.flash('success', `You have successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}"> View Store</a>`)
+	res.redirect(`/stores/${store._id}/edit`)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
